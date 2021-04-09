@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  <title>spring-base-annotation - 讨厌下雨天</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="个人博客">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  
+  
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
+  <meta name="description" content="spring 与 spring-boot 中的常用注解 spring-context包下的org.springframework.stereotype@Controller @Service @Repository @Configuration @Component 只用于区分各个层级的注解，注入到spring容器管理, 没有实质的差别  @Bean 等价于xml文件中添加等&lt;Bean&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring-base-annotation">
+<meta property="og:url" content="https://vulgarlover.github.io/2021/04/09/spring-base-annotation/index.html">
+<meta property="og:site_name" content="讨厌下雨天">
+<meta property="og:description" content="spring 与 spring-boot 中的常用注解 spring-context包下的org.springframework.stereotype@Controller @Service @Repository @Configuration @Component 只用于区分各个层级的注解，注入到spring容器管理, 没有实质的差别  @Bean 等价于xml文件中添加等&lt;Bean&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-04-09T06:35:46.000Z">
+<meta property="article:modified_time" content="2021-04-09T06:36:45.845Z">
+<meta property="article:author" content="YSAR">
+<meta property="article:tag" content="讨厌下雨天">
+<meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css?v=1617950223461">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="mdui-drawer-body-left">
+  
+  <div id="nexmoe-background">
+    <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+    <div class="mdui-appbar mdui-shadow-0">
+      <div class="mdui-toolbar">
+        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+        <div class="mdui-toolbar-spacer"></div>
+        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+        <a href="/" title="YSAR" class="mdui-btn mdui-btn-icon"><img src="https://github.com/vulgarLover/cdn/blob/master/image/logo.jpg" alt="YSAR"></a>
+       </div>
+    </div>
+  </div>
+  <div id="nexmoe-header">
+      <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="YSAR">
+            <img src="https://github.com/vulgarLover/cdn/blob/master/image/logo.jpg" alt="YSAR" alt="YSAR">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>7</div>
+        <div><span>Tags</span>2</div>
+        <div><span>Categories</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+            <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+        </form>
+    </div>
+</div>
+  
+  <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://jq.qq.com/?_wv=1027&k=5CfKHun" target="_blank" mdui-tooltip="{content: 'QQ群'}" style="color: rgb(249, 174, 8);background-color: rgba(249, 174, 8, .1);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a><a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/nexmoe/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+  
+  
+
+  
+  
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a>
+    </div>
+    
+  </div>
+
+  
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2021 YSAR
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+  </div>
+  <div id="nexmoe-content">
+    <div class="nexmoe-primary">
+        <div class="nexmoe-post">
+  
+      <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+          <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="spring-base-annotation" class="lazyload">
+          <h1>spring-base-annotation</h1>
+      </div>
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月09日</a>
+    <a><i class="nexmoefont icon-areachart"></i>841 字</a>
+    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+</div>
+
+  <div class="nexmoe-post-right">
+    
+  </div>
+
+  <article>
+    <p>spring 与 spring-boot 中的常用注解</p>
+<h2 id="spring-context包下的org-springframework-stereotype"><a href="#spring-context包下的org-springframework-stereotype" class="headerlink" title="spring-context包下的org.springframework.stereotype"></a>spring-context包下的org.springframework.stereotype</h2><h3 id="Controller-Service-Repository-Configuration-Component"><a href="#Controller-Service-Repository-Configuration-Component" class="headerlink" title="@Controller @Service @Repository @Configuration @Component"></a>@Controller @Service @Repository @Configuration @Component</h3><blockquote>
+<p>只用于区分各个层级的注解，注入到spring容器管理, 没有实质的差别</p>
+</blockquote>
+<h3 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h3><blockquote>
+<p>等价于xml文件中添加等<code>&lt;Bean&gt;&lt;/Bean&gt;</code>，添加的bean的id为方法名。</p>
+</blockquote>
+<pre><code class="java">@Configuration
+// @Configuration可理解为用spring的时候xml里面的&lt;beans&gt;标签
+public class AppConfig &#123;
+    //@bean 也可以依赖其他任意数量的bean，如果TransferService 依赖 AccountRepository，我们可以通过方法参数实现这个依赖
+    @Bean
+    public TransferService transferService(AccountRepository accountRepository) &#123;
+        return new TransferServiceImpl(accountRepository);
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="xml">&lt;beans&gt;
+    &lt;bean id=&quot;transferService&quot; class=&quot;com.acme.TransferServiceImpl&quot;  depends-on=&quot;accountRepository&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<blockquote>
+<p>以上两种方式,达成的效果是一致的</p>
+</blockquote>
+<h2 id="spring-web包下的org-springframework-web-bind-annotation"><a href="#spring-web包下的org-springframework-web-bind-annotation" class="headerlink" title="spring-web包下的org.springframework.web.bind.annotation"></a>spring-web包下的org.springframework.web.bind.annotation</h2><h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><blockquote>
+<p>使用该注解,可以放方法返回结果封装为json对象写入HTTP 响应正文中。</p>
+</blockquote>
+<h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h3><blockquote>
+<p>处理请求地址映射的注解,方法上必须有,类上可以没有<br>RequestMapping注解有六个属性，分别是value, method, consumes, produces, params, headers</p>
+</blockquote>
+<ol>
+<li><p>value</p>
+<p> 指定请求的实际地址，指定的地址可以是URI Template 模式（后面将会说明）</p>
+</li>
+<li><p>method</p>
+<p> 指定请求的method类型(GET、POST、PUT、DELETE等)<br> 相当于<code>@PostMapping(value=&quot;&quot;)</code>,<code>@GetMapping(value=&quot;&quot;)</code>等</p>
+</li>
+<li><p>consumes</p>
+<p> 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;</p>
+</li>
+<li><p>produces</p>
+<p> 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；</p>
+</li>
+<li><p>params</p>
+<p> 指定request中必须包含某些参数值是，才让该方法处理。</p>
+</li>
+<li><p>headers</p>
+<p> 指定request中必须包含某些指定的header值，才能让该方法处理请求。</p>
+</li>
+</ol>
+<h3 id="PathVariable-RequestParam-RequestBody"><a href="#PathVariable-RequestParam-RequestBody" class="headerlink" title="@PathVariable,@RequestParam,@RequestBody"></a>@PathVariable,@RequestParam,@RequestBody</h3><ol>
+<li><p>相同点</p>
+<p> 三者都用于方法参数之前</p>
+</li>
+<li><p>不同点</p>
+<p> GET请求使用<code>@PathVariable</code>接收url模板参数,即参数也是映射的一部分,参数丢失会导致无法匹配映射</p>
+<p> GET请求使用<code>@RequestParam</code>接收url中的<code>params</code>部分,也就是<code>?</code>之后的通过<code>&amp;</code>分割的<code>key=value</code>组合</p>
+<p> POST请求使用<code>@RequestBody</code>接收请求体中的json参数,并封装成对应的javabean类型</p>
+</li>
+</ol>
+<h3 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h3><blockquote>
+<p>相当于@ResponseBody ＋ @Controller</p>
+</blockquote>
+<h2 id="springboot常用注解"><a href="#springboot常用注解" class="headerlink" title="springboot常用注解"></a>springboot常用注解</h2><h3 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h3><blockquote>
+<p>将配置文件中配置的每一个属性的值，映射到这个组件中</p>
+</blockquote>
+<pre><code class="java">
+**
+ * @ConfigurationProperties：
+ *      prefix = &quot;person&quot;：配置文件下面的所有属性和类的属性进行一一映射
+ *
+ * 只有这个组件是容器中的组件，才能容器提供的@ConfigurationProperties功能；
+ *
+ */
+@Component
+@ConfigurationProperties(prefix = &quot;person&quot;)
+public class Person &#123;
+
+    private String lastName;
+    private Integer age;
+    private Boolean boss;
+    private Date birth;
+
+    private Map&lt;String,Object&gt; maps;
+    private List&lt;Object&gt; lists;
+    private Dog dog;
+</code></pre>
+<pre><code class="properties">person:
+    lastName: hello
+    age: 18
+    boss: false
+    birth: 2017/12/12
+    maps: &#123;k1: v1,k2: 12&#125;
+    lists:
+      - lisi
+      - zhaoliu
+    dog:
+      name: 小狗
+      age: 12
+</code></pre>
+<h3 id="MapperScan-“com-xxx-dao”"><a href="#MapperScan-“com-xxx-dao”" class="headerlink" title="@MapperScan(“com.xxx.dao”)"></a>@MapperScan(“com.xxx.dao”)</h3><blockquote>
+<p>扫描dao接口</p>
+</blockquote>
+<h3 id="SpringBootApplication-scanBasePackages-“com-xxx”"><a href="#SpringBootApplication-scanBasePackages-“com-xxx”" class="headerlink" title="@SpringBootApplication(scanBasePackages = {“com.xxx”})"></a>@SpringBootApplication(scanBasePackages = {“com.xxx”})</h3><blockquote>
+<p>SpringBootApplication启动时会默认扫描主类当前包及子包，如果需要扫描主类当前包外的其他包就用@ComponentScan</p>
+</blockquote>
+<h3 id="注入bean的三个注解"><a href="#注入bean的三个注解" class="headerlink" title="注入bean的三个注解"></a>注入bean的三个注解</h3><ul>
+<li>@Autowired是spring自带的，@Inject是JSR330规范实现的，@Resource是JSR250规范实现的，需要导入不同的包</li>
+<li>@Autowired、@Inject用法基本一样，不同的是@Autowired有一个request属性</li>
+<li>@Autowired、@Inject是默认按照类型匹配的，@Resource是按照名称匹配的</li>
+<li>@Autowired如果需要按照名称匹配需要和@Qualifier一起使用，@Inject和@Name一起使用</li>
+</ul>
+<h3 id="ImportResource"><a href="#ImportResource" class="headerlink" title="@ImportResource"></a>@ImportResource</h3><blockquote>
+<p>用来加载自定义的xml配置文件</p>
+</blockquote>
+
+  </article>
+
+  
+    
+  <div class="nexmoe-post-copyright">
+    <strong>Author：</strong>YSAR<br>
+    <strong>Link：</strong><a href="https://vulgarlover.github.io/2021/04/09/spring-base-annotation/" title="https:&#x2F;&#x2F;vulgarlover.github.io&#x2F;2021&#x2F;04&#x2F;09&#x2F;spring-base-annotation&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;vulgarlover.github.io&#x2F;2021&#x2F;04&#x2F;09&#x2F;spring-base-annotation&#x2F;</a><br>
+    
+      <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+    
+  </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+    
+</div>
+
+  <div class="nexmoe-post-footer">
+    <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '9e1f825e2357b2459ca8',
+        clientSecret: 'f098970ca0825704db61f99bb118c4f4f372b29f',
+        id: window.location.pathname,
+        repo: 'hexo-nexmoe-gitalk',
+        owner: 'vulgarLover',
+        admin: 'vulgarLover'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+  </div>
+</div>
+        <div class="nexmoe-post-right">
+          <div class="nexmoe-fixed">
+            <div class="nexmoe-tool">
+              <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script>
+	hljs.initHighlightingOnLoad();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
+ 
+
+<script src="/js/app.js?v=1617950223463"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+  
+
+
+
+
+
+</body>
+
+</html>

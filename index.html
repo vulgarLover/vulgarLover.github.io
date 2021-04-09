@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css">
   
-  <link rel="stylesheet" href="/css/style.css?v=1617886722204">
+  <link rel="stylesheet" href="/css/style.css?v=1617950223477">
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="mdui-drawer-body-left">
@@ -49,7 +49,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>Articles</span>5</div>
+        <div><span>Articles</span>7</div>
         <div><span>Tags</span>2</div>
         <div><span>Categories</span>0</div>
     </div>
@@ -123,6 +123,634 @@
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
         <section class="nexmoe-posts">
+    
+    <div class="nexmoe-post">
+        <a href="/2021/04/09/spring-base-annotation/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="spring-base-annotation" class="lazyload">
+                    <h1>spring-base-annotation</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月09日</a>
+            <a><i class="nexmoefont icon-areachart"></i>841 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 3 分钟</a>
+        </div>
+
+        <article>
+            
+                <p>spring 与 spring-boot 中的常用注解</p>
+<h2 id="spring-context包下的org-springframework-stereotype"><a href="#spring-context包下的org-springframework-stereotype" class="headerlink" title="spring-context包下的org.springframework.stereotype"></a>spring-context包下的org.springframework.stereotype</h2><h3 id="Controller-Service-Repository-Configuration-Component"><a href="#Controller-Service-Repository-Configuration-Component" class="headerlink" title="@Controller @Service @Repository @Configuration @Component"></a>@Controller @Service @Repository @Configuration @Component</h3><blockquote>
+<p>只用于区分各个层级的注解，注入到spring容器管理, 没有实质的差别</p>
+</blockquote>
+<h3 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h3><blockquote>
+<p>等价于xml文件中添加等<code>&lt;Bean&gt;&lt;/Bean&gt;</code>，添加的bean的id为方法名。</p>
+</blockquote>
+<pre><code class="java">@Configuration
+// @Configuration可理解为用spring的时候xml里面的&lt;beans&gt;标签
+public class AppConfig &#123;
+    //@bean 也可以依赖其他任意数量的bean，如果TransferService 依赖 AccountRepository，我们可以通过方法参数实现这个依赖
+    @Bean
+    public TransferService transferService(AccountRepository accountRepository) &#123;
+        return new TransferServiceImpl(accountRepository);
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="xml">&lt;beans&gt;
+    &lt;bean id=&quot;transferService&quot; class=&quot;com.acme.TransferServiceImpl&quot;  depends-on=&quot;accountRepository&quot;/&gt;
+&lt;/beans&gt;
+</code></pre>
+<blockquote>
+<p>以上两种方式,达成的效果是一致的</p>
+</blockquote>
+<h2 id="spring-web包下的org-springframework-web-bind-annotation"><a href="#spring-web包下的org-springframework-web-bind-annotation" class="headerlink" title="spring-web包下的org.springframework.web.bind.annotation"></a>spring-web包下的org.springframework.web.bind.annotation</h2><h3 id="ResponseBody"><a href="#ResponseBody" class="headerlink" title="@ResponseBody"></a>@ResponseBody</h3><blockquote>
+<p>使用该注解,可以放方法返回结果封装为json对象写入HTTP 响应正文中。</p>
+</blockquote>
+<h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="@RequestMapping"></a>@RequestMapping</h3><blockquote>
+<p>处理请求地址映射的注解,方法上必须有,类上可以没有<br>RequestMapping注解有六个属性，分别是value, method, consumes, produces, params, headers</p>
+</blockquote>
+<ol>
+<li><p>value</p>
+<p> 指定请求的实际地址，指定的地址可以是URI Template 模式（后面将会说明）</p>
+</li>
+<li><p>method</p>
+<p> 指定请求的method类型(GET、POST、PUT、DELETE等)<br> 相当于<code>@PostMapping(value=&quot;&quot;)</code>,<code>@GetMapping(value=&quot;&quot;)</code>等</p>
+</li>
+<li><p>consumes</p>
+<p> 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;</p>
+</li>
+<li><p>produces</p>
+<p> 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；</p>
+</li>
+<li><p>params</p>
+<p> 指定request中必须包含某些参数值是，才让该方法处理。</p>
+</li>
+<li><p>headers</p>
+<p> 指定request中必须包含某些指定的header值，才能让该方法处理请求。</p>
+</li>
+</ol>
+<h3 id="PathVariable-RequestParam-RequestBody"><a href="#PathVariable-RequestParam-RequestBody" class="headerlink" title="@PathVariable,@RequestParam,@RequestBody"></a>@PathVariable,@RequestParam,@RequestBody</h3><ol>
+<li><p>相同点</p>
+<p> 三者都用于方法参数之前</p>
+</li>
+<li><p>不同点</p>
+<p> GET请求使用<code>@PathVariable</code>接收url模板参数,即参数也是映射的一部分,参数丢失会导致无法匹配映射</p>
+<p> GET请求使用<code>@RequestParam</code>接收url中的<code>params</code>部分,也就是<code>?</code>之后的通过<code>&amp;</code>分割的<code>key=value</code>组合</p>
+<p> POST请求使用<code>@RequestBody</code>接收请求体中的json参数,并封装成对应的javabean类型</p>
+</li>
+</ol>
+<h3 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h3><blockquote>
+<p>相当于@ResponseBody ＋ @Controller</p>
+</blockquote>
+<h2 id="springboot常用注解"><a href="#springboot常用注解" class="headerlink" title="springboot常用注解"></a>springboot常用注解</h2><h3 id="ConfigurationProperties"><a href="#ConfigurationProperties" class="headerlink" title="@ConfigurationProperties"></a>@ConfigurationProperties</h3><blockquote>
+<p>将配置文件中配置的每一个属性的值，映射到这个组件中</p>
+</blockquote>
+<pre><code class="java">
+**
+ * @ConfigurationProperties：
+ *      prefix = &quot;person&quot;：配置文件下面的所有属性和类的属性进行一一映射
+ *
+ * 只有这个组件是容器中的组件，才能容器提供的@ConfigurationProperties功能；
+ *
+ */
+@Component
+@ConfigurationProperties(prefix = &quot;person&quot;)
+public class Person &#123;
+
+    private String lastName;
+    private Integer age;
+    private Boolean boss;
+    private Date birth;
+
+    private Map&lt;String,Object&gt; maps;
+    private List&lt;Object&gt; lists;
+    private Dog dog;
+</code></pre>
+<pre><code class="properties">person:
+    lastName: hello
+    age: 18
+    boss: false
+    birth: 2017/12/12
+    maps: &#123;k1: v1,k2: 12&#125;
+    lists:
+      - lisi
+      - zhaoliu
+    dog:
+      name: 小狗
+      age: 12
+</code></pre>
+<h3 id="MapperScan-“com-xxx-dao”"><a href="#MapperScan-“com-xxx-dao”" class="headerlink" title="@MapperScan(“com.xxx.dao”)"></a>@MapperScan(“com.xxx.dao”)</h3><blockquote>
+<p>扫描dao接口</p>
+</blockquote>
+<h3 id="SpringBootApplication-scanBasePackages-“com-xxx”"><a href="#SpringBootApplication-scanBasePackages-“com-xxx”" class="headerlink" title="@SpringBootApplication(scanBasePackages = {“com.xxx”})"></a>@SpringBootApplication(scanBasePackages = {“com.xxx”})</h3><blockquote>
+<p>SpringBootApplication启动时会默认扫描主类当前包及子包，如果需要扫描主类当前包外的其他包就用@ComponentScan</p>
+</blockquote>
+<h3 id="注入bean的三个注解"><a href="#注入bean的三个注解" class="headerlink" title="注入bean的三个注解"></a>注入bean的三个注解</h3><ul>
+<li>@Autowired是spring自带的，@Inject是JSR330规范实现的，@Resource是JSR250规范实现的，需要导入不同的包</li>
+<li>@Autowired、@Inject用法基本一样，不同的是@Autowired有一个request属性</li>
+<li>@Autowired、@Inject是默认按照类型匹配的，@Resource是按照名称匹配的</li>
+<li>@Autowired如果需要按照名称匹配需要和@Qualifier一起使用，@Inject和@Name一起使用</li>
+</ul>
+<h3 id="ImportResource"><a href="#ImportResource" class="headerlink" title="@ImportResource"></a>@ImportResource</h3><blockquote>
+<p>用来加载自定义的xml配置文件</p>
+</blockquote>
+
+            
+        </article>
+    </div>
+    
+    <div class="nexmoe-post">
+        <a href="/2021/04/09/transaction/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="transaction" class="lazyload">
+                    <h1>transaction</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月09日</a>
+            <a><i class="nexmoefont icon-areachart"></i>3.6k 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 16 分钟</a>
+        </div>
+
+        <article>
+            
+                <p>事务介绍  以及事务的控制</p>
+<p>&lt;–more–&gt;</p>
+<h3 id="事务定义（Transaction）"><a href="#事务定义（Transaction）" class="headerlink" title="事务定义（Transaction）"></a>事务定义（Transaction）</h3><ul>
+<li>事务：一个最小的不可再分的工作单元；通常一个事务对应一个完整的业务（例如银行账户转账业务，该业务就是一个最小的工作单元）</li>
+<li>一个完整的业务需要有批量的DML（insert、update、delete）语句共同联合完成</li>
+<li>事务只和DML语句有关，或者说DML语句才有事务。</li>
+</ul>
+<h3 id="事务四大特征"><a href="#事务四大特征" class="headerlink" title="事务四大特征"></a>事务四大特征</h3><ul>
+<li>原子性(A)：事务是最小单位，不可再分</li>
+<li>一致性(C)：事务要求所有的DML语句操作的时候，必须保证同时成功或者同时失败</li>
+<li>隔离性(I)：事务A和事务B之间具有隔离性</li>
+<li>持久性(D)：是事务的保证，事务终结的标志(内存的数据持久到硬盘文件中)</li>
+</ul>
+<h3 id="事务的开始与结束"><a href="#事务的开始与结束" class="headerlink" title="事务的开始与结束"></a>事务的开始与结束</h3><ol>
+<li>事务开始<ul>
+<li>任何一条DML语句执行，都标志事务的开始</li>
+</ul>
+</li>
+<li>事务结束<ul>
+<li>commit或者rollback，即提交或者回滚</li>
+</ul>
+</li>
+</ol>
+<h3 id="事务的实现"><a href="#事务的实现" class="headerlink" title="事务的实现"></a>事务的实现</h3><blockquote>
+<p>在事务的进行过程中，未结束之前，DML语句是不会更改底层数据，只是将历史操作记录一下，在内存中完成记录。只有在事务结束的时候，而且是成功结束的时候，才会修改底层硬盘文件中的数据</p>
+</blockquote>
+<hr>
+<h1 id="编程式事务管理"><a href="#编程式事务管理" class="headerlink" title="编程式事务管理"></a>编程式事务管理</h1><p><code>PlatformTransactionManager</code>提供的相关接口来进行事务管理。</p>
+<pre><code class="java">public interface PlatformTransactionManager extends TransactionManager &#123;
+
+    /**
+     * 获取当前事务的状态
+     */
+    TransactionStatus getTransaction(@Nullable TransactionDefinition definition)
+            throws TransactionException;
+
+    /**
+     * 提交当前事务
+     */
+    void commit(TransactionStatus status) throws TransactionException;
+
+
+    /**
+     * 回滚当前事务
+     */
+    void rollback(TransactionStatus status) throws TransactionException;
+
+&#125;
+</code></pre>
+<p>首先要获取一个<code>TransactionDefinition</code>的实现类对象</p>
+<h3 id="TransactionDefinition"><a href="#TransactionDefinition" class="headerlink" title="TransactionDefinition"></a>TransactionDefinition</h3><blockquote>
+<p>主要定义了有哪些事务属性可以指定：</p>
+<ol>
+<li><p>事务的传播行为(Propagation Behavior)</p>
+</li>
+<li><p>事务的隔离(Isolation)级别</p>
+</li>
+<li><p>事务的超时时间(Timeout)</p>
+</li>
+<li><p>是否为只读(Readonly)事务</p>
+</li>
+</ol>
+</blockquote>
+<p>先看源码</p>
+<pre><code class="java">public interface TransactionDefinition &#123;
+
+    /**
+     * 事务传播级别1：当前如果有事务，Spring就会使用该事务；否则会开始一个新事务；(这也是默认设置和定义）
+     */
+    int PROPAGATION_REQUIRED = 0;
+
+    /**
+     * 事务传播级别2：当前如果有事务，Spring就会使用该事务；否则不会开始一个新事务
+     */
+    int PROPAGATION_SUPPORTS = 1;
+
+    /**
+     * 事务传播级别3：当前如果有事务，Spring就会使用该事务；否则会因为没有事务而抛出异常
+     */
+    int PROPAGATION_MANDATORY = 2;
+
+    /**
+     * 事务传播级别4：总是要开启一个新事务。如果当前已经有事务，则将已有事务挂起
+     */
+    int PROPAGATION_REQUIRES_NEW = 3;
+
+    /**
+     * 事务传播级别5：代码总是在非事务环境下执行，如果当前有事务，则将已有事务挂起，再执行代码，之后恢复事务
+     */
+    int PROPAGATION_NOT_SUPPORTED = 4;
+
+    /**
+     * 事务传播级别6：绝对不允许代码在事务中执行。如果当前运行环境有事务存在，则直接抛出异常，结束运行
+     */
+    int PROPAGATION_NEVER = 5;
+
+    /**
+     * 事务传播级别7：该级别支持嵌套事务执行。如果没有父事务存在，那么执行情况与PROPAGATION_REQUIRED一样；典型的应用是批量数据入库，开启父事务对一批数据入库，而对于每条入库的数据都有一个子事务对应，那么当所有的子事务成功，父事务提交，才算成功，否则，就都失败。
+     */
+    int PROPAGATION_NESTED = 6;
+
+
+    
+    /**
+     * 事务隔离级别1：Spring默认的隔离级别，采用数据库默认的隔离级别，mysql默认的是可重复读，而oracle默认的是读提交
+     *
+     * @see java.sql.Connection
+     */
+    int ISOLATION_DEFAULT = -1;
+
+    /**
+     * 事务隔离级别2：读未提交，即一个事务可以读取另外一个事务中未提交的数据，即脏读数据存在，性能最好，但是没啥用。
+     * same as java.sql.Connection.TRANSACTION_READ_UNCOMMITTED;
+     */
+    int ISOLATION_READ_UNCOMMITTED = 1;
+
+    /**
+     * 事务隔离级别3：读提交，即一个事务只能读取到另一个事务提交后的数据，oracle数据库默认隔离级别；存在不可重复读问题，即交叉事务出现，A事务两次读取数据可能会读到B事务提交的修改后的数据，即在同一个事务中读到了不同的数据，也叫不可重复读
+     * same as java.sql.Connection.TRANSACTION_READ_COMMITTED;
+     */
+    int ISOLATION_READ_COMMITTED = 2;
+
+    /**
+     * 事务隔离级别4：可重复读，即一个事务只能读取到在次事务之前提交的数据，而之后提交不能读取到，不管对方的事务是否提交都读取不到，mysql默认的隔离级别。此隔离级别有可能会遇到幻读现象，但是mysql 基于innodb引擎实现的数据库已经通过多版本控制解决了此问题，所以可以不考虑了。
+     * same as java.sql.Connection.TRANSACTION_REPEATABLE_READ;
+     */
+    int ISOLATION_REPEATABLE_READ = 4;
+
+    /**
+     * 事务隔离级别5：序列化读，每次都是全表锁，性能最差，安全性最高，一般场景不适用，也没有这个必要。
+     * same as java.sql.Connection.TRANSACTION_SERIALIZABLE;
+     */
+    int ISOLATION_SERIALIZABLE = 8;
+
+
+    /**
+     * 线程已经跑到方法里面，如果已经过去60秒（设置时间）了还没跑完这个方法并且线程在这个方法中的后面还有涉及到对数据库的增删改查操作时会报事务超时错误（会回滚）。如果已经过去60秒了还没跑完但是后面已经没有涉及到对数据库的增删改查操作，那么这时不会报事务超时错误（不会回滚）。
+     */
+    int TIMEOUT_DEFAULT = -1;
+
+    /**
+     * @return 默认的传播行为
+     */
+    default int getPropagationBehavior() &#123;
+        return PROPAGATION_REQUIRED;
+    &#125;
+
+    /**
+     * @return 默认的隔离级别
+     */
+    default int getIsolationLevel() &#123;
+        return ISOLATION_DEFAULT;
+    &#125;
+
+    /**
+     * @return 事务默认的超时时间
+     */
+    default int getTimeout() &#123;
+        return TIMEOUT_DEFAULT;
+    &#125;
+
+    /**
+     * @return 事务是否为只读
+     */
+    default boolean isReadOnly() &#123;
+        return false;
+    &#125;
+
+    /**
+     *
+     */
+    @Nullable
+    default String getName() &#123;
+        return null;
+    &#125;
+
+    /**
+     * 静态的构建方法，获取一个StaticTransactionDefinition对象
+     */
+    static TransactionDefinition withDefaults() &#123;
+        return StaticTransactionDefinition.INSTANCE;
+    &#125;
+
+&#125;
+</code></pre>
+<p>创建一个<code>DefaultTransactionDefinition</code>的instance。关于DefaultTransactionDefinition</p>
+<pre><code class="java">@SuppressWarnings(&quot;serial&quot;)
+public class DefaultTransactionDefinition implements TransactionDefinition, Serializable &#123;
+
+    /** Prefix for the propagation constants defined in TransactionDefinition. */
+    public static final String PREFIX_PROPAGATION = &quot;PROPAGATION_&quot;;
+
+    /** Prefix for the isolation constants defined in TransactionDefinition. */
+    public static final String PREFIX_ISOLATION = &quot;ISOLATION_&quot;;
+
+    /** Prefix for transaction timeout values in description strings. */
+    public static final String PREFIX_TIMEOUT = &quot;timeout_&quot;;
+
+    /** Marker for read-only transactions in description strings. */
+    public static final String READ_ONLY_MARKER = &quot;readOnly&quot;;
+
+
+    /** Constants instance for TransactionDefinition. */
+    static final Constants constants = new Constants(TransactionDefinition.class);
+
+    private int propagationBehavior = PROPAGATION_REQUIRED;
+
+    private int isolationLevel = ISOLATION_DEFAULT;
+
+    private int timeout = TIMEOUT_DEFAULT;
+
+    private boolean readOnly = false;
+
+    @Nullable
+    private String name;
+
+    
+    public DefaultTransactionDefinition() &#123;
+    &#125;
+    
+    public DefaultTransactionDefinition(TransactionDefinition other) &#123;
+        this.propagationBehavior = other.getPropagationBehavior();
+        this.isolationLevel = other.getIsolationLevel();
+        this.timeout = other.getTimeout();
+        this.readOnly = other.isReadOnly();
+        this.name = other.getName();
+    &#125;
+    
+    public DefaultTransactionDefinition(int propagationBehavior) &#123;
+        this.propagationBehavior = propagationBehavior;
+    &#125;
+
+    
+    public final void setPropagationBehaviorName(String constantName) throws IllegalArgumentException &#123;
+        if (!constantName.startsWith(PREFIX_PROPAGATION)) &#123;
+            throw new IllegalArgumentException(&quot;Only propagation constants allowed&quot;);
+        &#125;
+        setPropagationBehavior(constants.asNumber(constantName).intValue());
+    &#125;
+    
+    public final void setPropagationBehavior(int propagationBehavior) &#123;
+        if (!constants.getValues(PREFIX_PROPAGATION).contains(propagationBehavior)) &#123;
+            throw new IllegalArgumentException(&quot;Only values of propagation constants allowed&quot;);
+        &#125;
+        this.propagationBehavior = propagationBehavior;
+    &#125;
+
+    @Override
+    public final int getPropagationBehavior() &#123;
+        return this.propagationBehavior;
+    &#125;
+
+
+    public final void setIsolationLevelName(String constantName) throws IllegalArgumentException &#123;
+        if (!constantName.startsWith(PREFIX_ISOLATION)) &#123;
+            throw new IllegalArgumentException(&quot;Only isolation constants allowed&quot;);
+        &#125;
+        setIsolationLevel(constants.asNumber(constantName).intValue());
+    &#125;
+    
+    public final void setIsolationLevel(int isolationLevel) &#123;
+        if (!constants.getValues(PREFIX_ISOLATION).contains(isolationLevel)) &#123;
+            throw new IllegalArgumentException(&quot;Only values of isolation constants allowed&quot;);
+        &#125;
+        this.isolationLevel = isolationLevel;
+    &#125;
+
+    @Override
+    public final int getIsolationLevel() &#123;
+        return this.isolationLevel;
+    &#125;
+    
+    public final void setTimeout(int timeout) &#123;
+        if (timeout &lt; TIMEOUT_DEFAULT) &#123;
+            throw new IllegalArgumentException(&quot;Timeout must be a positive integer or TIMEOUT_DEFAULT&quot;);
+        &#125;
+        this.timeout = timeout;
+    &#125;
+
+    @Override
+    public final int getTimeout() &#123;
+        return this.timeout;
+    &#125;
+
+
+    public final void setReadOnly(boolean readOnly) &#123;
+        this.readOnly = readOnly;
+    &#125;
+
+    @Override
+    public final boolean isReadOnly() &#123;
+        return this.readOnly;
+    &#125;
+
+
+    public final void setName(String name) &#123;
+        this.name = name;
+    &#125;
+
+    @Override
+    @Nullable
+    public final String getName() &#123;
+        return this.name;
+    &#125;
+    
+    @Override
+    public boolean equals(@Nullable Object other) &#123;
+        return (this == other || (other instanceof TransactionDefinition &amp;&amp; toString().equals(other.toString())));
+    &#125;
+    
+    @Override
+    public int hashCode() &#123;
+        return toString().hashCode();
+    &#125;
+    
+    @Override
+    public String toString() &#123;
+        return getDefinitionDescription().toString();
+    &#125;
+    
+    protected final StringBuilder getDefinitionDescription() &#123;
+        StringBuilder result = new StringBuilder();
+        result.append(constants.toCode(this.propagationBehavior, PREFIX_PROPAGATION));
+        result.append(&#39;,&#39;);
+        result.append(constants.toCode(this.isolationLevel, PREFIX_ISOLATION));
+        if (this.timeout != TIMEOUT_DEFAULT) &#123;
+            result.append(&#39;,&#39;);
+            result.append(PREFIX_TIMEOUT).append(this.timeout);
+        &#125;
+        if (this.readOnly) &#123;
+            result.append(&#39;,&#39;);
+            result.append(READ_ONLY_MARKER);
+        &#125;
+        return result;
+    &#125;
+
+&#125;
+</code></pre>
+<blockquote>
+<p>只要TransactionDefinition 创建成功，就可以通过 getTransaction()来开启事务，该方法返回TransactionStatus的实例。TransactionStatus可以帮助我们追踪当前事务的状态。如果一切运行良好，就可以调用PlatformTransactionManager 的commit() 方法来commit这个事物，反之调用rollback()来rollback。</p>
+</blockquote>
+<h1 id="通过注解实现自动化事务管理"><a href="#通过注解实现自动化事务管理" class="headerlink" title="通过注解实现自动化事务管理"></a>通过注解实现自动化事务管理</h1><h3 id="Transaction"><a href="#Transaction" class="headerlink" title="@Transaction"></a>@Transaction</h3><blockquote>
+<p>在开发的过程中，用事务最多的方式是通过注解@Transaction来完成的，虽然大多数的业务场景都可以在这一个注解下完成即可。但是为了适应某些特别的场景比方说只读方法的优化等，通过对@Transaction来添加参数来完成我们想要的事务传播特性和隔离级别，以及是否只对某些异常类做回滚，是否只读方法等。</p>
+</blockquote>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><pre><code class="java">@Transactional(propagation = Propagation.MANDATORY, isolation = Isolation.READ_COMMITTED, noRollbackFor = &#123;Exception.class&#125;, readOnly = true, timeout = 3)
+</code></pre>
+<ol>
+<li><p><code>propagation</code></p>
+<ul>
+<li>使用propagation 指定事务的传播行为，即当前的事务方法被另外一个事务方法调用时如何使用事务。</li>
+<li>默认取值为<code>REQUIRED</code>，即使用调用方法的事务</li>
+<li><code>SUPPORTS</code>：支持当前事务，如果当前没有事务，就以非事务方式执行。 </li>
+<li><code>MANDATORY</code>：支持当前事务，如果当前没有事务，就抛出异常。 </li>
+<li><code>REQUIRES_NEW</code>新建事务，如果当前存在事务，把当前事务挂起。 </li>
+<li><code>NOT_SUPPORTED</code>：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。</li>
+<li><code>NEVER</code>：以非事务方式执行，如果当前存在事务，则抛出异常。 </li>
+<li><code>NESTED</code>：支持当前事务，如果当前事务存在，则执行一个嵌套事务，如果当前没有事务，就新建一个事务。 </li>
+</ul>
+</li>
+<li><p><code>isolation</code></p>
+<ul>
+<li>使用isolation 指定事务的隔离级别，最常用的取值为READ_COMMITTED</li>
+<li>默认情况下<code>Spring</code>的声明式事务对所有的运行时异常进行回滚，也可以通过对应的属性进行设置。通常情况下，默认值即可。</li>
+</ul>
+</li>
+<li><p><code>noRollbackFor</code></p>
+<ul>
+<li>特定的异常类对象</li>
+<li>如果有多个异常类对象，用逗号分隔即可。</li>
+</ul>
+</li>
+<li><p><code>readOnly</code></p>
+<ul>
+<li>指定事务是否为只读。 表示这个事务只读取数据但不更新数据，这样可以帮助数据库引擎优化事务。若真的是一个只读取数据库值得方法，应设置readOnly=true</li>
+</ul>
+</li>
+<li><p><code>timeout</code></p>
+<ul>
+<li>使用timeOut 指定强制回滚之前事务可以占用的时间</li>
+</ul>
+</li>
+</ol>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li><p>全局注意事项</p>
+<ul>
+<li>一个功能是否要事务，必须纳入设计、编码考虑。不能仅仅完成了基本功能就ok。</li>
+<li>如果加了事务，必须做好开发环境测试（测试环境也尽量触发异常、测试回滚），确保事务生效。</li>
+</ul>
+</li>
+<li><p>以下列了事务使用过程的注意事项，请大家留意。</p>
+<ul>
+<li>不要在接口上声明@Transactional ，而要在具体类的方法上使用 @Transactional 注解，否则注解可能无效。</li>
+<li>不要图省事，将@Transactional放置在类级的声明中，放在类声明，会使得所有方法都有事务。故@Transactional应该放在方法级别，不需要使用事务的方法，就不要放置事务，比如查询方法。否则对性能是有影响的。</li>
+<li>使用了@Transactional的方法，对同一个类里面的方法调用， @Transactional无效。比如有一个类Test，它的一个方法A，A再调用Test本类的方法B（不管B是否public还是private），但A没有声明注解事务，而B有。则外部调用A之后，B的事务是不会起作用的。（经常在这里出错）</li>
+<li>使用了@Transactional的方法，只能是public，@Transactional注解的方法都是被外部其他类调用才有效，故只能是public。道理和上面的有关联。故在 protected、private 或者 package-visible 的方法上使用 @Transactional 注解，它也不会报错，但事务无效。</li>
+</ul>
+</li>
+<li><p>经过在ICORE-CLAIM中测试，效果如下：</p>
+<ul>
+<li>抛出受查异常XXXException，事务会回滚。</li>
+<li>抛出运行时异常NullPointerException，事务会回滚。</li>
+<li>Quartz中，execute直接调用加了@Transactional方法，可以回滚；间接调用，不会回滚。（即上文第3点提到的）</li>
+<li>异步任务中，execute直接调用加了@Transactional方法，可以回滚；间接调用，不会回滚。（即上文第3点提到的）</li>
+<li>在action中加上@Transactional，不会回滚。切记不要在action中加上事务。</li>
+<li>在service中加上@Transactional，如果是action直接调该方法，会回滚，如果是间接调，不会回滚。（即上文第3提到的）</li>
+<li>在service中的private加上@Transactional，事务不会回滚。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="REQUIRED与REQUIRED-NEW"><a href="#REQUIRED与REQUIRED-NEW" class="headerlink" title="REQUIRED与REQUIRED_NEW"></a><code>REQUIRED</code>与<code>REQUIRED_NEW</code></h3><blockquote>
+<p>上面描述的6种propagation属性配置中，最难以理解，并且容易在transaction设计时出现问题的是REQUIRED和REQURED_NEW这两者的区别。当程序在某些情况下抛出异常时，如果对于这两者不够了解，就可能很难发现而且解决问题。</p>
+<p>下面我们给出三个场景进行分析：</p>
+</blockquote>
+<h4 id="场景一："><a href="#场景一：" class="headerlink" title="场景一："></a>场景一：</h4><pre><code class="java">ServiceA.java:
+public class ServiceA &#123;
+    @Transactional
+    public void callB() &#123;
+        serviceB.doSomething();
+    &#125;
+&#125;
+ServiceB.java
+public class ServiceB &#123;
+    @Transactional
+    public void doSomething() &#123;
+        throw new RuntimeException(&quot;B throw exception&quot;);
+    &#125;
+&#125;
+</code></pre>
+<blockquote>
+<p>这种情况下，我们只需要在调用ServiceA.callB时捕获ServiceB中抛出的运行时异常，则transaction就会正常的rollback。</p>
+</blockquote>
+<h4 id="场景二"><a href="#场景二" class="headerlink" title="场景二"></a>场景二</h4><blockquote>
+<p>在保持场景一中ServiceB不变，在ServiceA中调用ServiceB的doSomething时去捕获这个异常，如下：</p>
+</blockquote>
+<pre><code class="java">public class ServiceA &#123;
+    @Transactional
+    public void callB() &#123;
+        try &#123;
+            serviceB.doSomething();
+        &#125; catch (RuntimeException e) &#123;
+            System.err.println(e.getMessage());
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<blockquote>
+<p>这个时候，我们再调用ServiceA的callB。程序会抛出<code>org.springframework.transaction.UnexpectedRollbackException: Transaction rolled back because it has been marked as rollback-only</code>这样一个异常信息。原因是什么呢？</p>
+<p>因为在ServiceA和ServiceB中的@Transactional propagation都采用的默认值：REQUREID。根据我们前面讲过的REQUIRED特性，当ServiceA调用ServiceB的时候，他们是处于同一个transaction中。如下图所示：</p>
+</blockquote>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="https://img-blog.csdn.net/20140301150020000?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQva2l3aV9jb2Rlcg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="ss" class="lazyload"></p>
+<h4 id="场景三"><a href="#场景三" class="headerlink" title="场景三"></a>场景三</h4><blockquote>
+<p>在保持场景二中ServiceA不变，修改ServiceB中方法的propagation配置为REQUIRES_NEW，如下：</p>
+</blockquote>
+<pre><code class="java">public class ServiceB &#123;
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void doSomething() &#123;
+        throw new RuntimeException(&quot;B throw exception&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>此时，程序可以正常的退出了，也没有抛出UnexpectedRollbackException。原因是因为当ServiceA调用ServiceB时，serviceB的doSomething是在一个新的transaction中执行的。如下图所示：</p>
+<p><img src="https://img-blog.csdn.net/20140301150211281?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQva2l3aV9jb2Rlcg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"></p>
+<blockquote>
+<p>以，当doSomething抛出异常以后，仅仅是把新创建的transaction rollback了，而不会影响到ServiceA的transaction。ServiceA就可以正常的进行commit。</p>
+<p>当然这里把ServiceA和ServiceB放在两个独立的transaction是否成立，还需要再多多考虑你的业务需求。</p>
+</blockquote>
+
+            
+        </article>
+    </div>
     
     <div class="nexmoe-post">
         <a href="/2021/04/08/windows-base/">
@@ -277,7 +905,7 @@
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
  
 
-<script src="/js/app.js?v=1617886722205"></script>
+<script src="/js/app.js?v=1617950223477"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
 <script>
