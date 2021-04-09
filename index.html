@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/mdui_043tiny/css/mdui.css,gh/theme-nexmoe/hexo-theme-nexmoe@latest/source/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css">
   
-  <link rel="stylesheet" href="/css/style.css?v=1617950223477">
+  <link rel="stylesheet" href="/css/style.css?v=1617952248359">
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="mdui-drawer-body-left">
@@ -49,7 +49,7 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>Articles</span>7</div>
+        <div><span>Articles</span>9</div>
         <div><span>Tags</span>2</div>
         <div><span>Categories</span>0</div>
     </div>
@@ -123,6 +123,87 @@
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
         <section class="nexmoe-posts">
+    
+    <div class="nexmoe-post">
+        <a href="/2021/04/09/css/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="css" class="lazyload">
+                    <h1>css</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月09日</a>
+            <a><i class="nexmoefont icon-areachart"></i>0 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+        </div>
+
+        <article>
+            
+                
+            
+        </article>
+    </div>
+    
+    <div class="nexmoe-post">
+        <a href="/2021/04/09/sql-optimization/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 66.66666666666666%;"> 
+                    <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="sql-optimization" class="lazyload">
+                    <h1>sql-optimization</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2021年04月09日</a>
+            <a><i class="nexmoefont icon-areachart"></i>528 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 2 分钟</a>
+        </div>
+
+        <article>
+            
+                <p>记录一些sql优化的方案</p>
+<ol>
+<li><p>对查询进行优化，应尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引。</p>
+</li>
+<li><p>尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描</p>
+</li>
+<li><p>尽量避免在 where 子句中使用!=或&lt;&gt;操作符，否则将引擎放弃使用索引而进行全表扫描。</p>
+</li>
+<li><p>应尽量避免在 where 子句中使用 or 来连接条件，否则将导致引擎放弃使用索引而进行全表扫描,如:</p>
+<pre><code>select id from t where num=10 or num=20
+
+可以改写为
+
+select id from t where num=10
+union all
+select id from t where num=20
+</code></pre>
+</li>
+<li><p>尽量避免使用in关键字,否则将会导致全表扫描,能使用between就不要使用in</p>
+</li>
+<li><p>尽量避免在 where 子句中对字段进行表达式操作，这将导致引擎放弃使用索引而进行全表扫描</p>
+</li>
+<li><p>尽量避免在where子句中对字段进行函数操作，这将导致引擎放弃使用索引而进行全表扫描</p>
+</li>
+<li><p>禁止在update语句中使用子查询</p>
+</li>
+<li><p>explain关键字用于分析sql语句的执行情况，可以通过他进行sql语句的性能分析。</p>
+</li>
+<li><p>分页查询中禁止使用一对多关联的查询 (其实可以考虑在项目中禁止使用关联查询 都是用单表查询的方式来处理)</p>
+</li>
+<li><p>查询比较复杂的表并且拥有复杂的查询条件时  可以先使用条件把符合条件的数据idList拿到  再使用in去查询数据集合</p>
+</li>
+<li><p>数据库结构一定要设计好, 适当的拆表, 举一个例子来说, 在电商项目中, 用户有余额数据信息, 单单看余额本身, 其实就是属于会员信息的一部分, 但是余额变动的频率远高于用户个人信息的频率, 要把一些常用字段单独放在一张表里面;</p>
+</li>
+</ol>
+
+            
+        </article>
+    </div>
     
     <div class="nexmoe-post">
         <a href="/2021/04/09/spring-base-annotation/">
@@ -905,7 +986,7 @@ public class ServiceB &#123;
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
  
 
-<script src="/js/app.js?v=1617950223477"></script>
+<script src="/js/app.js?v=1617952248360"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
 <script>
